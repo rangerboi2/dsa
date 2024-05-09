@@ -1,0 +1,112 @@
+7)Write a java program to implement Circular queue using array and perform
+Create, display, search and modify
+
+
+import java.util.Scanner;
+
+public class CircularQueue {
+    private static final int MAX_SIZE = 5; // Maximum size of the circular queue
+    private static int[] queue = new int[MAX_SIZE]; // Circular queue array
+    private static int front = -1; // Front of the circular queue
+    private static int rear = -1; // Rear of the circular queue
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("\nMenu:");
+            System.out.println("1. Create Circular Queue");
+            System.out.println("2. Display Circular Queue");
+            System.out.println("3. Search an Element in Circular Queue");
+            System.out.println("4. Modify an Element in Circular Queue");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    createQueue();
+                    break;
+                case 2:
+                    displayQueue();
+                    break;
+                case 3:
+                    System.out.print("Enter element to search: ");
+                    int searchElement = scanner.nextInt();
+                    searchElement(searchElement);
+                    break;
+                case 4:
+                    System.out.print("Enter index to modify (0 to " + (MAX_SIZE - 1) + "): ");
+                    int index = scanner.nextInt();
+                    System.out.print("Enter new element: ");
+                    int newElement = scanner.nextInt();
+                    modifyElement(index, newElement);
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please enter a valid option.");
+            }
+        } while (choice != 5);
+        scanner.close();
+    }
+
+    // Function to create circular queue
+    public static void createQueue() {
+        front = rear = 0;
+        System.out.println("Circular Queue created successfully.");
+    }
+
+    // Function to display circular queue
+    public static void displayQueue() {
+        if (isEmpty()) {
+            System.out.println("Circular Queue is empty.");
+        } else {
+            System.out.println("Circular Queue:");
+            int i = front;
+            do {
+                System.out.print(queue[i] + " ");
+                i = (i + 1) % MAX_SIZE;
+            } while (i != rear);
+            System.out.println();
+        }
+    }
+
+    // Function to search an element in circular queue
+    public static void searchElement(int element) {
+        if (isEmpty()) {
+            System.out.println("Circular Queue is empty. Cannot search.");
+        } else {
+            int i = front;
+            boolean found = false;
+            do {
+                if (queue[i] == element) {
+                    System.out.println("Element " + element + " found at index " + i);
+                    found = true;
+                    break;
+                }
+                i = (i + 1) % MAX_SIZE;
+            } while (i != rear);
+            if (!found) {
+                System.out.println("Element " + element + " not found in the Circular Queue.");
+            }
+        }
+    }
+
+    // Function to modify an element in circular queue
+    public static void modifyElement(int index, int newElement) {
+        if (isEmpty()) {
+            System.out.println("Circular Queue is empty. Cannot modify.");
+        } else if (index < 0 || index >= MAX_SIZE) {
+            System.out.println("Invalid index. Please enter a valid index.");
+        } else {
+            queue[index] = newElement;
+            System.out.println("Element at index " + index + " modified successfully.");
+        }
+    }
+
+    // Function to check if the circular queue is empty
+    public static boolean isEmpty() {
+        return front == -1 && rear == -1;
+    }
+}

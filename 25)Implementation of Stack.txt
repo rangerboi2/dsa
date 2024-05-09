@@ -1,0 +1,124 @@
+25) Write a java program to Perform implementation of STACK  using link list
+i.	Push an element on to stack          
+ii.	Pop an element 
+iii.	Demonstrate overflow simulations on stack   
+iv.	iv. Display stack.
+
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class Stack {
+    Node top;
+    int size;
+    int capacity;
+
+    public Stack(int capacity) {
+        this.top = null;
+        this.size = 0;
+        this.capacity = capacity;
+    }
+
+    // Method to check if the stack is empty
+    public boolean isEmpty() {
+        return top == null;
+    }
+
+    // Method to check if the stack is full (overflow)
+    public boolean isFull() {
+        return size == capacity;
+    }
+
+    // Method to push an element onto the stack
+    public void push(int data) {
+        if (isFull()) {
+            System.out.println("Stack overflow! Cannot push element " + data);
+            return;
+        }
+        Node newNode = new Node(data);
+        newNode.next = top;
+        top = newNode;
+        size++;
+        System.out.println("Element " + data + " pushed onto the stack");
+    }
+
+    // Method to pop an element from the stack
+    public void pop() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty! Cannot pop element");
+            return;
+        }
+        int poppedElement = top.data;
+        top = top.next;
+        size--;
+        System.out.println("Element " + poppedElement + " popped from the stack");
+    }
+
+    // Method to display the elements of the stack
+    public void display() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty");
+            return;
+        }
+        Node current = top;
+        System.out.print("Stack: ");
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the capacity of the stack:");
+        int capacity = scanner.nextInt();
+        Stack stack = new Stack(capacity);
+
+        System.out.println("Stack Operations");
+        while (true) {
+            System.out.println("\nChoose an operation:");
+            System.out.println("1. Push");
+            System.out.println("2. Pop");
+            System.out.println("3. Display");
+            System.out.println("4. Exit");
+
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    if (stack.isFull()) {
+                        System.out.println("Stack is full! Cannot push more elements");
+                    } else {
+                        System.out.println("Enter the element to push:");
+                        int element = scanner.nextInt();
+                        stack.push(element);
+                    }
+                    break;
+                case 2:
+                    stack.pop();
+                    break;
+                case 3:
+                    stack.display();
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+            }
+        }
+    }
+}

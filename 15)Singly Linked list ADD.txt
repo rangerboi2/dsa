@@ -1,0 +1,81 @@
+15) Write a java program to implement singly linked list and perform
+Add node  at end, front, middle position and display
+
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class SinglyLinkedList {
+    private Node head;
+
+    SinglyLinkedList() {
+        this.head = null;
+    }
+
+    // Add node at the end of the linked list
+    void addNodeAtEnd(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = newNode;
+    }
+
+    // Add node at the front of the linked list
+    void addNodeAtFront(int data) {
+        Node newNode = new Node(data);
+        newNode.next = head;
+        head = newNode;
+    }
+
+    // Add node at the middle position of the linked list
+    public void insertatmiddle(int data, int key) {
+        Node newNode = new Node(data);
+        Node current = head;
+        while (current != null && current.data != key) {
+            current = current.next;
+        }
+        if (current != null) {
+            newNode.next = current.next;
+            current.next = newNode;
+        }
+
+    }
+
+    // Display the linked list
+    void display() {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        SinglyLinkedList list = new SinglyLinkedList();
+        
+        // Add nodes at different positions
+        list.addNodeAtEnd(1);
+        list.addNodeAtEnd(3);
+        list.addNodeAtFront(0);
+        list.addNodeAtMiddle(2, 2);
+        
+        // Display the linked list
+        System.out.println("Linked List:");
+        list.display();
+    }
+}

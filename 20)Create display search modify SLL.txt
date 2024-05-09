@@ -1,0 +1,106 @@
+20) Write a java program to implement singly linked list and perform
+Create, display, search and modify
+
+class Node {
+    int data;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class LinkedList {
+    Node head;
+
+    public LinkedList() {
+        this.head = null;
+    }
+
+    // Method to insert a new node at the end of the list
+    public void insert(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node current = head;
+            while (current.next != null) {
+                current = current.next;
+            }
+            current.next = newNode;
+        }
+    }
+
+    // Method to display the elements of the linked list
+    public void display() {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + " -> ");
+            current = current.next;
+        }
+        System.out.println("null");
+    }
+
+    // Method to search for a given value in the linked list
+    public boolean search(int value) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == value) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    // Method to modify the value of a node at a given position
+    public void modify(int position, int newValue) {
+        if (position < 0) {
+            System.out.println("Invalid position");
+            return;
+        }
+
+        Node current = head;
+        int index = 0;
+        while (current != null) {
+            if (index == position) {
+                current.data = newValue;
+                return;
+            }
+            current = current.next;
+            index++;
+        }
+        System.out.println("Position out of range");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        LinkedList list = new LinkedList();
+
+        // Inserting elements into the linked list
+        list.insert(10);
+        list.insert(20);
+        list.insert(30);
+        list.insert(40);
+
+        // Displaying the linked list
+        System.out.println("Linked List:");
+        list.display();
+
+        // Searching for a value in the linked list
+        int searchValue = 20;
+        System.out.println("Is " + searchValue + " present in the list? " + list.search(searchValue));
+
+        // Modifying a value at a given position
+        int positionToModify = 2;
+        int newValue = 25;
+        System.out.println("Modifying value at position " + positionToModify + " to " + newValue);
+        list.modify(positionToModify, newValue);
+
+        // Displaying the modified linked list
+        System.out.println("Modified Linked List:");
+        list.display();
+    }
+}

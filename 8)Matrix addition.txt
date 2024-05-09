@@ -1,0 +1,82 @@
+8)Write a java program to perform matrix addition.
+
+import java.util.Scanner;
+
+public class MatrixAddition {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("\nMenu:");
+            System.out.println("1. Add two matrices");
+            System.out.println("2. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    addMatrices();
+                    break;
+                case 2:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please enter a valid option.");
+            }
+        } while (choice != 2);
+        scanner.close();
+    }
+
+    // Function to add two matrices
+    public static void addMatrices() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter number of rows and columns for both matrices:");
+        int rows = scanner.nextInt();
+        int columns = scanner.nextInt();
+
+        // Initializing matrices
+        int[][] matrix1 = new int[rows][columns];
+        int[][] matrix2 = new int[rows][columns];
+        int[][] sum = new int[rows][columns];
+
+        // Input elements for matrix 1
+        System.out.println("Enter elements for first matrix:");
+        inputMatrixElements(matrix1);
+
+        // Input elements for matrix 2
+        System.out.println("Enter elements for second matrix:");
+        inputMatrixElements(matrix2);
+
+        // Adding matrices
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                sum[i][j] = matrix1[i][j] + matrix2[i][j];
+            }
+        }
+
+        // Displaying the result
+        System.out.println("Sum of the matrices is:");
+        displayMatrix(sum);
+        scanner.close();
+    }
+
+    // Function to input matrix elements
+    public static void inputMatrixElements(int[][] matrix) {
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.print("Enter element at position (" + (i + 1) + ", " + (j + 1) + "): ");
+                matrix[i][j] = scanner.nextInt();
+            }
+        }
+    }
+
+    // Function to display matrix
+    public static void displayMatrix(int[][] matrix) {
+        for (int[] row : matrix) {
+            for (int element : row) {
+                System.out.print(element + " ");
+            }
+            System.out.println();
+        }
+    }
+}

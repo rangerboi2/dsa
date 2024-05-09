@@ -1,0 +1,42 @@
+5)Write a java program that Sort the data in descending order using Bubble sort (Display pass by pass output).
+
+public class BubbleSortDescending {
+    public static void main(String[] args) {
+        int[] arr = {64, 34, 25, 12, 22, 11, 90};
+
+        System.out.println("Original Array:");
+        printArray(arr);
+
+        bubbleSortDescending(arr);
+
+        System.out.println("\nSorted Array in Descending Order:");
+        printArray(arr);
+    }
+
+    // Function to perform Bubble Sort in descending order
+    public static void bubbleSortDescending(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] < arr[j + 1]) {
+                    // Swap arr[j] and arr[j+1]
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+
+                    // Print pass by pass output
+                    System.out.println("Pass " + (i + 1) + ", Swap: " + arr[j] + " and " + arr[j + 1]);
+                    printArray(arr);
+                }
+            }
+        }
+    }
+
+    // Function to print an array
+    public static void printArray(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+}

@@ -1,0 +1,142 @@
+24) Write a java program to implement Circular queue using link list  and perform
+Create, display, search and modify
+
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class CircularQueue {
+    Node front, rear;
+
+    public CircularQueue() {
+        this.front = null;
+        this.rear = null;
+    }
+
+    // Method to check if the circular queue is empty
+    public boolean isEmpty() {
+        return front == null;
+    }
+
+    // Method to create a node and add it to the circular queue
+    public void enqueue(int data) {
+        Node newNode = new Node(data);
+        if (isEmpty()) {
+            front = rear = newNode;
+        } else {
+            rear.next = newNode;
+            rear = newNode;
+        }
+        rear.next = front;
+    }
+
+    // Method to display the elements of the circular queue
+    public void display() {
+        if (isEmpty()) {
+            System.out.println("Circular Queue is empty");
+            return;
+        }
+
+        Node temp = front;
+        System.out.print("Circular Queue: ");
+        do {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        } while (temp != front);
+        System.out.println();
+    }
+
+    // Method to search for a given value in the circular queue
+    public boolean search(int value) {
+        if (isEmpty()) {
+            return false;
+        }
+
+        Node current = front;
+        do {
+            if (current.data == value) {
+                return true;
+            }
+            current = current.next;
+        } while (current != front);
+        return false;
+    }
+
+    // Method to modify the value of a node with a given value
+    public void modify(int oldValue, int newValue) {
+        if (isEmpty()) {
+            System.out.println("Circular Queue is empty");
+            return;
+        }
+
+        Node current = front;
+        do {
+            if (current.data == oldValue) {
+                current.data = newValue;
+                return;
+            }
+            current = current.next;
+        } while (current != front);
+        System.out.println("Value not found in the circular queue.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        CircularQueue queue = new CircularQueue();
+
+        System.out.println("Circular Queue Operations");
+        while (true) {
+            System.out.println("\nChoose an operation:");
+            System.out.println("1. Enqueue");
+            System.out.println("2. Display");
+            System.out.println("3. Search");
+            System.out.println("4. Modify");
+            System.out.println("5. Exit");
+
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter the value to enqueue:");
+                    int valueToEnqueue = scanner.nextInt();
+                    queue.enqueue(valueToEnqueue);
+                    break;
+                case 2:
+                    queue.display();
+                    break;
+                case 3:
+                    System.out.println("Enter the value to search:");
+                    int valueToSearch = scanner.nextInt();
+                    if (queue.search(valueToSearch)) {
+                        System.out.println("Value " + valueToSearch + " is present in the circular queue.");
+                    } else {
+                        System.out.println("Value " + valueToSearch + " is not present in the circular queue.");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Enter the value to modify:");
+                    int oldValue = scanner.nextInt();
+                    System.out.println("Enter the new value:");
+                    int newValue = scanner.nextInt();
+                    queue.modify(oldValue, newValue);
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 5.");
+            }
+        }
+    }
+}

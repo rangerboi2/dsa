@@ -1,0 +1,48 @@
+4)Write a java program to implement binary search algorithm on student database.
+
+import java.util.Scanner;
+
+public class StudentDatabaseBinarySearch {
+    public static void main(String[] args) {
+        // Initialize the student database
+        String[] studentNames = {"Alice", "Bob", "David", "Emily", "John"};
+        int[] studentIDs = {102, 103, 105, 104, 101};
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter student name to search: ");
+        String searchName = scanner.nextLine();
+
+        // Perform binary search
+        int index = binarySearch(studentNames, searchName);
+
+        if (index != -1) {
+            System.out.println("Student found:");
+            System.out.println("Name: " + studentNames[index]);
+            System.out.println("ID: " + studentIDs[index]);
+        } else {
+            System.out.println("Student not found.");
+        }
+
+        scanner.close();
+    }
+
+    // Binary search algorithm
+    public static int binarySearch(String[] arr, String target) {
+        int low = 0;
+        int high = arr.length - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            int cmp = arr[mid].compareTo(target);
+
+            if (cmp == 0) {
+                return mid; // Return index of the found element
+            } else if (cmp < 0) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return -1; // Return -1 if element not found
+    }
+}

@@ -1,0 +1,131 @@
+23)Write a java program to implement doubly linked list and perform
+Create, display, search and modify
+
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node prev;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+class DoublyLinkedList {
+    Node head;
+    Node tail;
+
+    public DoublyLinkedList() {
+        this.head = null;
+        this.tail = null;
+    }
+
+    // Method to add a node at the end of the list
+    public void addNode(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            newNode.prev = tail;
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
+
+    // Method to display the elements of the doubly linked list
+    public void display() {
+        if (head == null) {
+            System.out.println("Doubly Linked List is empty");
+            return;
+        }
+
+        Node current = head;
+        System.out.print("Doubly Linked List: ");
+        while (current != null) {
+            System.out.print(current.data + " <-> ");
+            current = current.next;
+        }
+        System.out.println("null");
+    }
+
+    // Method to search for a given value in the doubly linked list
+    public boolean search(int value) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == value) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    // Method to modify the value of a node with a given value
+    public void modify(int oldValue, int newValue) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == oldValue) {
+                current.data = newValue;
+                return;
+            }
+            current = current.next;
+        }
+        System.out.println("Value not found in the list.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        DoublyLinkedList list = new DoublyLinkedList();
+
+        System.out.println("Doubly Linked List Operations");
+        while (true) {
+            System.out.println("\nChoose an operation:");
+            System.out.println("1. Add Node");
+            System.out.println("2. Display");
+            System.out.println("3. Search");
+            System.out.println("4. Modify");
+            System.out.println("5. Exit");
+
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter the value to add:");
+                    int valueToAdd = scanner.nextInt();
+                    list.addNode(valueToAdd);
+                    break;
+                case 2:
+                    list.display();
+                    break;
+                case 3:
+                    System.out.println("Enter the value to search:");
+                    int valueToSearch = scanner.nextInt();
+                    if (list.search(valueToSearch)) {
+                        System.out.println("Value " + valueToSearch + " is present in the list.");
+                    } else {
+                        System.out.println("Value " + valueToSearch + " is not present in the list.");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Enter the value to modify:");
+                    int oldValue = scanner.nextInt();
+                    System.out.println("Enter the new value:");
+                    int newValue = scanner.nextInt();
+                    list.modify(oldValue, newValue);
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 5.");
+            }
+        }
+    }
+}

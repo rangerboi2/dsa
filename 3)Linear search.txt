@@ -1,0 +1,38 @@
+3)Write a java program to implement linear search algorithm on student database.
+
+import java.util.Scanner;
+
+public class StudentDatabaseLinearSearch {
+    public static void main(String[] args) {
+        // Initialize the student database
+        String[] studentNames = {"John", "Alice", "Bob", "Emily", "David"};
+        int[] studentIDs = {101, 102, 103, 104, 105};
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter student name to search: ");
+        String searchName = scanner.nextLine();
+
+        // Perform linear search
+        int index = linearSearch(studentNames, searchName);
+
+        if (index != -1) {
+            System.out.println("Student found:");
+            System.out.println("Name: " + studentNames[index]);
+            System.out.println("ID: " + studentIDs[index]);
+        } else {
+            System.out.println("Student not found.");
+        }
+
+        scanner.close();
+    }
+
+    // Linear search algorithm
+    public static int linearSearch(String[] arr, String target) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(target)) {
+                return i; // Return index of the found element
+            }
+        }
+        return -1; // Return -1 if element not found
+    }
+}

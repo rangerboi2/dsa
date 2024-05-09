@@ -1,0 +1,58 @@
+12)Write a java program that Sort the data in ascending order using Bubble (Display pass by pass output).
+
+import java.util.Scanner;
+
+public class BubbleSort {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input size of the array
+        System.out.print("Enter the size of the array: ");
+        int size = scanner.nextInt();
+
+        // Input elements of the array
+        int[] arr = new int[size];
+        System.out.println("Enter the elements of the array:");
+        for (int i = 0; i < size; i++) {
+            arr[i] = scanner.nextInt();
+        }
+
+        // Perform Bubble Sort
+        bubbleSort(arr);
+
+        // Display sorted array
+        System.out.println("Sorted array in ascending order:");
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+
+        scanner.close();
+    }
+
+    // Function to perform Bubble Sort
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                // Swap if current element is greater than next element
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+
+                    // Display pass-by-pass output
+                    System.out.println("Pass " + (i + 1) + ": " + arrayToString(arr));
+                }
+            }
+        }
+    }
+
+    // Function to convert array to string
+    public static String arrayToString(int[] arr) {
+        StringBuilder sb = new StringBuilder();
+        for (int num : arr) {
+            sb.append(num).append(" ");
+        }
+        return sb.toString();
+    }
+}

@@ -1,0 +1,50 @@
+2)Write a java program that accept conventional matrix and check whether it is a sparse matrix and represent it in the form of triplet (row, col, value).
+
+import java.util.Scanner;
+public class assignment2 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter nuumber of rows");
+        int rows = sc.nextInt();
+        System.out.println("Enter nuumber of columns");
+        int cols = sc.nextInt();
+
+        int[][] matrix = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrix[i][j] = sc.nextInt();
+            }
+        }
+        System.out.println("Conventional Matrix");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                System.out.print(matrix[i][j]);
+            }
+            System.out.println();
+        }
+
+        int countzero = 0;
+        for (int[] row : matrix) {
+            for (int element : row) {
+                if (element == 0) {
+                    countzero++;
+                }
+            }
+        }
+
+        boolean issparse = countzero > (rows * cols) / 2;
+        if (issparse) {
+            System.out.println("Conventional matrix given is a sparse matrix");
+            System.out.println("rows\tcolumns\tvalue");
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    if (matrix[i][j] != 0) {
+                        System.out.println(i + "\t" + j + "\t" + matrix[i][j]);
+                    }
+                }
+                // System.out.println();
+            }
+        }
+        sc.close();
+    }
+}

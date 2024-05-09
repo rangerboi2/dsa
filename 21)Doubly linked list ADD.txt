@@ -1,0 +1,111 @@
+21)Write a java program to implement doubly linked list and perform
+Add node  at end, front, middle position and display
+
+class Node {
+    int data;
+    Node prev;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+class DoublyLinkedList {
+    Node head;
+    Node tail;
+
+    public DoublyLinkedList() {
+        this.head = null;
+        this.tail = null;
+    }
+
+    // Method to add a node at the end of the list
+    public void addAtEnd(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            newNode.prev = tail;
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
+
+    // Method to add a node at the front of the list
+    public void addAtFront(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+    }
+
+    // Method to add a node at a given position
+    public void addAtPosition(int position, int data) {
+        Node newNode = new Node(data);
+        if (position < 0) {
+            System.out.println("Invalid position");
+            return;
+        }
+        if (position == 0) {
+            addAtFront(data);
+        } else {
+            Node current = head;
+            int index = 0;
+            while (current != null && index < position - 1) {
+                current = current.next;
+                index++;
+            }
+            if (current == null) {
+                System.out.println("Position out of range");
+                return;
+            }
+            newNode.next = current.next;
+            newNode.prev = current;
+            if (current.next != null) {
+                current.next.prev = newNode;
+            } else {
+                tail = newNode;
+            }
+            current.next = newNode;
+        }
+    }
+
+    // Method to display the elements of the doubly linked list
+    public void display() {
+        Node current = head;
+        System.out.print("Doubly Linked List: ");
+        while (current != null) {
+            System.out.print(current.data + " <-> ");
+            current = current.next;
+        }
+        System.out.println("null");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        DoublyLinkedList list = new DoublyLinkedList();
+
+        // Adding elements to the doubly linked list
+        list.addAtEnd(10);
+        list.addAtEnd(20);
+        list.addAtEnd(30);
+
+        // Displaying the doubly linked list
+        list.display();
+
+        // Adding elements at front and middle position
+        list.addAtFront(5);
+        list.addAtPosition(2, 15);
+
+        // Displaying the modified doubly linked list
+        list.display();
+    }
+}

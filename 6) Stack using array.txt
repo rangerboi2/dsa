@@ -1,0 +1,97 @@
+6)Write a java program to Perform implementation of STACK  using array
+i.	Push an element on to stack          
+ii.	Pop an element 
+iii.	Demonstrate overflow simulations on stack   
+iv.	Display stack.
+
+
+import java.util.Scanner;
+
+public class StackArrayMenuDriven {
+    private static final int MAX_SIZE = 5; // Maximum size of the stack
+    private static int[] stack = new int[MAX_SIZE]; // Stack array
+    private static int top = -1; // Top of the stack
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("\nMenu:");
+            System.out.println("1. Push an element onto the stack");
+            System.out.println("2. Pop an element from the stack");
+            System.out.println("3. Display stack");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    if (isFull()) {
+                        System.out.println("Stack overflow! Cannot push more elements.");
+                    } else {
+                        System.out.print("Enter element to push: ");
+                        int element = scanner.nextInt();
+                        push(element);
+                        System.out.println("Element pushed onto the stack: " + element);
+                    }
+                    break;
+                case 2:
+                    if (isEmpty()) {
+                        System.out.println("Stack underflow! Cannot pop from an empty stack.");
+                    } else {
+                        int poppedElement = pop();
+                        System.out.println("Element popped from the stack: " + poppedElement);
+                    }
+                    break;
+                case 3:
+                    displayStack();
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please enter a valid option.");
+            }
+        } while (choice != 4);
+        scanner.close();
+    }
+
+    // Function to push an element onto the stack
+    public static void push(int element) {
+        if (!isFull()) {
+            top++;
+            stack[top] = element;
+        }
+    }
+
+    // Function to pop an element from the stack
+    public static int pop() {
+        int poppedElement = -1;
+        if (!isEmpty()) {
+            poppedElement = stack[top];
+            top--;
+        }
+        return poppedElement;
+    }
+
+    // Function to check if the stack is full
+    public static boolean isFull() {
+        return top == MAX_SIZE - 1;
+    }
+
+    // Function to check if the stack is empty
+    public static boolean isEmpty() {
+        return top == -1;
+    }
+
+    // Function to display the elements of the stack
+    public static void displayStack() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty.");
+        } else {
+            System.out.println("Elements of the stack:");
+            for (int i = top; i >= 0; i--) {
+                System.out.println(stack[i]);
+            }
+        }
+    }
+}
