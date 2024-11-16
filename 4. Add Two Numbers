@@ -1,0 +1,55 @@
+section .bss
+    num1 resb 10                     ; Reserve space for first number
+    num2 resb 10                     ; Reserve space for second number
+    result resb 10                   ; Reserve space for result
+
+section .data
+    prompt1 db "Enter first number: ", 0
+    prompt1_len equ $ - prompt1
+    prompt2 db "Enter second number: ", 0
+    prompt2_len equ $ - prompt2
+    newline db 0xA, 0
+    newline_len equ $ - newline
+
+section .text
+    global _start
+
+_start:
+    ; Prompt for the first number
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, prompt1
+    mov rdx, prompt1_len
+    syscall
+
+    ; Read the first number
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, num1
+    mov rdx, 10
+    syscall
+
+    ; Prompt for the second number
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, prompt2
+    mov rdx, prompt2_len
+    syscall
+
+    ; Read the second number
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, num2
+    mov rdx, 10
+    syscall
+
+    ; Convert both inputs to integers and add them
+    ; Add logic for conversion and addition here
+
+    ; Print the result
+    ; Output logic here
+
+    ; Exit the program
+    mov rax, 60
+    xor rdi, rdi
+    syscall

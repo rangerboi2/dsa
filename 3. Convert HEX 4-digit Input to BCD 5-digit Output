@@ -1,0 +1,60 @@
+section .bss
+    input resb 5                     ; Reserve space for hexadecimal input
+    output resb 6                    ; Reserve space for BCD output
+
+section .data
+    prompt db "Enter 4-digit hex: ", 0
+    prompt_len equ $ - prompt
+    newline db 0xA, 0
+    newline_len equ $ - newline
+
+section .text
+    global _start
+
+_start:
+    ; Print the prompt for input
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, prompt
+    mov rdx, prompt_len
+    syscall
+
+    ; Read the hexadecimal input
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, input
+    mov rdx, 5
+    syscall
+
+    ; Convert hexadecimal input to integer
+    xor rax, rax                     ; Clear rax (accumulator)
+    xor rcx, rcx                     ; Clear rcx (loop counter)
+    mov rsi, input                   ; Address of input buffer
+convert_hex:
+    lodsb                            ; Load next byte from input into AL
+    cmp al, '0'
+    jl end_hex                       ; Exit if character is below '0'
+    cmp al, '9'
+    jle is_digit                     ; Jump if character is between '0' and '9'
+    sub al, 7                        ; Adjust for letters (A-F)
+is_digit:
+    sub al, '0'                      ; Convert ASCII to integer
+    shl rax, 4                       ; Shift accumulator left by 4 (hex base)
+    add rax, rcx                     ; Add current digit to accumulator
+    loop convert_hex
+
+end_hex:
+    ; Convert integer (rax) to BCD and store in output buffer
+    ; Implement conversion logic here
+
+    ; Print the result (output buffer)
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, output
+    mov rdx, 6
+    syscall
+
+    ; Exit the program
+    mov rax, 60
+    xor rdi, rdi
+    syscall

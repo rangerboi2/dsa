@@ -1,0 +1,39 @@
+section .bss
+    input resb 10                    ; Reserve space for user input
+
+section .data
+    prompt db "Enter a number: ", 0  ; Prompt message
+    prompt_len equ $ - prompt        ; Length of the prompt message
+
+    newline db 0xA, 0                ; Newline character
+    newline_len equ $ - newline      ; Length of the newline
+
+section .text
+    global _start
+
+_start:
+    ; Print the prompt message
+    mov rax, 1                       ; Syscall for write
+    mov rdi, 1                       ; File descriptor for stdout
+    mov rsi, prompt                  ; Address of the prompt message
+    mov rdx, prompt_len              ; Length of the prompt message
+    syscall                          ; Call the kernel
+
+    ; Read user input
+    mov rax, 0                       ; Syscall for read
+    mov rdi, 0                       ; File descriptor for stdin
+    mov rsi, input                   ; Address of the buffer to store input
+    mov rdx, 10                      ; Maximum number of bytes to read
+    syscall                          ; Call the kernel
+
+    ; Echo the input back to the screen
+    mov rax, 1                       ; Syscall for write
+    mov rdi, 1                       ; File descriptor for stdout
+    mov rsi, input                   ; Address of the input buffer
+    mov rdx, rax                     ; Use the bytes read as the length
+    syscall                          ; Call the kernel
+
+    ; Exit the program
+    mov rax, 60                      ; Syscall for exit
+    xor rdi, rdi                     ; Exit code 0
+    syscall                          ; Call the kernel

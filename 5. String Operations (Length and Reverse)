@@ -1,0 +1,42 @@
+section .bss
+    input resb 100                   ; Reserve space for input string
+    length resb 4                    ; Reserve space for length of string
+    reverse resb 100                 ; Reserve space for reversed string
+
+section .data
+    prompt db "Enter a string: ", 0
+    prompt_len equ $ - prompt
+    newline db 0xA, 0
+    newline_len equ $ - newline
+
+section .text
+    global _start
+
+_start:
+    ; Prompt for the string
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, prompt
+    mov rdx, prompt_len
+    syscall
+
+    ; Read the string
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, input
+    mov rdx, 100
+    syscall
+
+    ; Compute the length of the string
+    ; Length calculation logic here
+
+    ; Reverse the string
+    ; Reverse logic here
+
+    ; Print the results
+    ; Printing logic here
+
+    ; Exit the program
+    mov rax, 60
+    xor rdi, rdi
+    syscall
