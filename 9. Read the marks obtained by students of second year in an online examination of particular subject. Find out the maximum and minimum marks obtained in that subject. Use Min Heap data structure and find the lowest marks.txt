@@ -1,0 +1,71 @@
+9. Read the marks obtained by students of second year in an online examination of particular subject. Find out the maximum and minimum marks obtained in that subject. Use Min Heap data structure and find the lowest marks
+
+import java.util.Scanner;
+
+public class FindMinMaxUsingHeap {
+    // Heapify the tree for a Min Heap
+    private static void heapifyMin(int[] arr, int n, int i) {
+        int smallest = i; // Initialize smallest as root
+        int left = 2 * i + 1; // Left child
+        int right = 2 * i + 2; // Right child
+
+        if (left < n && arr[left] < arr[smallest]) {
+            smallest = left;
+        }
+        if (right < n && arr[right] < arr[smallest]) {
+            smallest = right;
+        }
+
+        if (smallest != i) {
+            // Swap and heapify the affected subtree
+            int temp = arr[i];
+            arr[i] = arr[smallest];
+            arr[smallest] = temp;
+
+            heapifyMin(arr, n, smallest);
+        }
+    }
+
+    // Build Min Heap
+    private static void buildMinHeap(int[] arr, int n) {
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapifyMin(arr, n, i);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input: Number of students and their marks
+        System.out.print("Enter the number of students: ");
+        int n = scanner.nextInt();
+        int[] marks = new int[n];
+
+        System.out.println("Enter the marks:");
+        for (int i = 0; i < n; i++) {
+            marks[i] = scanner.nextInt();
+        }
+
+        // Step 1: Find Maximum and Minimum Marks
+        int maxMark = Integer.MIN_VALUE;
+        int minMark = Integer.MAX_VALUE;
+
+        for (int mark : marks) {
+            if (mark > maxMark) {
+                maxMark = mark;
+            }
+            if (mark < minMark) {
+                minMark = mark;
+            }
+        }
+
+        System.out.println("Maximum marks obtained: " + maxMark);
+        System.out.println("Minimum marks obtained: " + minMark);
+
+        // Step 2: Use Min Heap to Find the Lowest Marks
+        buildMinHeap(marks, n);
+
+        // The root of the Min Heap is the minimum element
+        System.out.println("The lowest marks using Min Heap are: " + marks[0]);
+    }
+}

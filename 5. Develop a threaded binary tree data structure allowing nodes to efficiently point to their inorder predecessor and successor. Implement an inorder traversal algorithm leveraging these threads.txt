@@ -1,0 +1,110 @@
+5. Develop a threaded binary tree data structure allowing nodes to efficiently point to their inorder predecessor and successor. Implement an inorder traversal algorithm leveraging these threads.
+
+import java.util.Scanner;
+
+public class ThreadedBinaryTreeApp {
+    private Node root;
+
+    // Insert method
+    public void insert(int data) {
+        root = insert(root, data);
+    }
+
+    private Node insert(Node root, int data) {
+        if (root == null) {
+            return new Node(data); // Create new node
+        }
+
+        if (data < root.data) {
+            if (!root.isleftthread) { // Regular left child exists
+                root.left = insert(root.left, data);
+            } else { // Replace left thread with actual child
+                Node temp = new Node(data);
+                temp.left = root.left; // Thread to predecessor
+                temp.isleftthread = true;
+                temp.right = root; // Thread to root (successor)
+                temp.isrightthread = true;
+                root.left = temp;
+                root.isleftthread = false; // Now has a real left child
+            }
+        } else if (data > root.data) {
+            if (!root.isrightthread) { // Regular right child exists
+                root.right = insert(root.right, data);
+            } else { // Replace right thread with actual child
+                Node temp = new Node(data);
+                temp.right = root.right; // Thread to successor
+                temp.isrightthread = true;
+                temp.left = root; // Thread to root (predecessor)
+                temp.isleftthread = true;
+                root.right = temp;
+                root.isrightthread = false; // Now has a real right child
+            }
+        } else {
+            // Duplicate value - ignore or handle as needed
+            System.out.println("Duplicate value: " + data);
+        }
+
+        return root;
+    }
+
+    // Inorder traversal using threads
+    public void inorderTraversal() {
+        if (root == null) {
+            System.out.println("Tree is empty.");
+            return;
+        }
+
+        Node current = root;
+
+        // Move to the leftmost node
+        while (current != null && !current.isleftthread) {
+            current = current.left;
+        }
+
+        // Traverse the tree using threads
+        while (current != null) {
+            System.out.print(current.data + " ");
+            if (current.isrightthread) {
+                current = current.right; // Follow thread to successor
+            } else {
+                current = current.right; // Move to right child
+                while (current != null && !current.isleftthread) {
+                    current = current.left; // Find the leftmost node
+                }
+            }
+        }
+
+        System.out.println(); // For clean output
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        ThreadedBinaryTreeApp tree = new ThreadedBinaryTreeApp();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter number of elements:");
+        int n = sc.nextInt();
+
+        System.out.println("Enter the elements:");
+        for (int i = 0; i < n; i++) {
+            tree.insert(sc.nextInt());
+        }
+
+        System.out.println("Inorder Traversal:");
+        tree.inorderTraversal();
+    }
+}
+
+// Node class
+class Node {
+    int data;
+    Node left, right;
+    boolean isleftthread, isrightthread;
+
+    Node(int data) {
+        this.data = data;
+        left = right = null;
+        isleftthread = true; // Initially threads point to predecessor and successor
+        isrightthread = true;
+    }
+}

@@ -1,0 +1,106 @@
+3. Pizza parlour accepting maximum N orders. Orders are served in FCFS basis. Order once placed can’t be cancelled. Write a program to simulate the system using circular QUEUE.
+
+import java.util.Scanner;
+
+class CircularQueue {
+    private int[] queue;
+    private int front, rear, size, capacity;
+
+    public CircularQueue(int capacity) {
+        this.capacity = capacity;
+        queue = new int[capacity];
+        front = -1;
+        rear = -1;
+        size = 0;
+    }
+
+    public boolean isFull() {
+        return size == capacity;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public void enqueue(int order) {
+        if (isFull()) {
+            System.out.println("Queue is full. Cannot accept more orders.");
+            return;
+        }
+        if (isEmpty()) {
+            front = 0;
+        }
+        rear = (rear + 1) % capacity;
+        queue[rear] = order;
+        size++;
+        System.out.println("Order " + order + " placed successfully.");
+    }
+
+    public void dequeue() {
+        if (isEmpty()) {
+            System.out.println("No orders to serve.");
+            return;
+        }
+        System.out.println("Serving order " + queue[front]);
+        front = (front + 1) % capacity;
+        size--;
+        if (isEmpty()) {
+            front = -1;
+            rear = -1;
+        }
+    }
+
+    public void displayQueue() {
+        if (isEmpty()) {
+            System.out.println("No orders in the queue.");
+            return;
+        }
+        System.out.print("Orders in the queue: ");
+        for (int i = 0; i < size; i++) {
+            System.out.print(queue[(front + i) % capacity] + " ");
+        }
+        System.out.println();
+    }
+}
+
+public class PizzaParlour {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the maximum number of orders the system can accept: ");
+        int capacity = scanner.nextInt();
+
+        CircularQueue queue = new CircularQueue(capacity);
+
+        int choice;
+        do {
+            System.out.println("\n1. Place Order");
+            System.out.println("2. Serve Order");
+            System.out.println("3. Display Orders");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter the order number to place: ");
+                    int order = scanner.nextInt();
+                    queue.enqueue(order);
+                    break;
+                case 2:
+                    queue.dequeue();
+                    break;
+                case 3:
+                    queue.displayQueue();
+                    break;
+                case 4:
+                    System.out.println("Exiting system...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        } while (choice != 4);
+
+        scanner.close();
+    }
+}

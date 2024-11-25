@@ -1,0 +1,170 @@
+2. For given infix expression eg. a-b*c-d/e+f, convert it into postfix expression using stack and show the operations step by step.
+
+import java.util.*;
+ 
+class Node {
+	char data;
+	Node left, right;
+ 
+	public Node(char data) {
+    	this.data = data;
+    	left = right = null;
+	}
+}
+ 
+class ExpressionTree {
+	// Check if character is an operator
+	boolean isOperator(char c) {
+    	return c == '+' || c == '-' || c == '*' || c == '/';
+	}
+ 
+	// Build the tree based on postfix expression
+	public Node buildTreeFromPostfix(String postfix) {
+    	Stack<Node> stack = new Stack<>();
+    	Node t, t1, t2;
+ 
+    	// Traverse through every character of the postfix expression
+    	for (int i = 0; i < postfix.length(); i++) {
+        	char c = postfix.charAt(i);
+ 
+        	// If operand, push into stack
+        	if (!isOperator(c)) {
+            	t = new Node(c);
+            	stack.push(t);
+        	}
+        	// If operator, pop two elements from stack, create a new node
+        	else {
+            	t = new Node(c);
+ 
+            	// Pop two operands
+            	t1 = stack.pop();   // First operand
+            	t2 = stack.pop();   // Second operand
+ 
+            	// Assign subtrees
+            	t.right = t1;
+            	t.left = t2;
+ 
+            	// Push the new node back to the stack
+            	stack.push(t);
+        	}
+    	}
+ 
+    	// The only element left in the stack is the root of the expression tree
+    	t = stack.peek();
+    	stack.pop();
+ 
+    	return t;
+	}
+ 
+	// Convert infix to postfix using stack (Shunting-yard algorithm)
+	public String infixToPostfix(String expression) {
+    	String result = "";
+    	Stack<Character> stack = new Stack<>();
+ 
+    	for (int i = 0; i < expression.length(); i++) {
+        	char c = expression.charAt(i);
+ 
+        	// If character is an operand, add to result
+        	if (Character.isLetterOrDigit(c)) {
+            	result += c;
+        	}
+        	// If character is '(', push to stack
+        	else if (c == '(') {
+            	stack.push(c);
+        	}
+        	// If character is ')', pop and add to result until '(' is encountered
+        	else if (c == ')') {
+            	while (!stack.isEmpty() && stack.peek() != '(') {
+                	result += stack.pop();
+            	}
+            	stack.pop();
+        	}
+        	// If an operator is encountered
+        	else {
+            	while (!stack.isEmpty() && precedence(c) <= precedence(stack.peek())) {
+                	result += stack.pop();
+            	}
+            	stack.push(c);
+        	}
+    	}
+ 
+    	// Pop all the operators from the stack
+    	while (!stack.isEmpty()) {
+        	result += stack.pop();
+    	}
+ 
+    	return result;
+	}
+ 
+	// Helper function to define precedence of operators
+	public int precedence(char c) {
+    	switch (c) {
+        	case '+':
+        	case '-':
+            	return 1;
+        	case '*':
+        	case '/':
+            	return 2;
+    	}
+    	return -1;
+	}
+}
+ 
+class PostorderTraversal {
+	public void postorderNonRecursive(Node root) {
+    	if (root == null) {
+        	return;
+    	}
+ 
+    	// Create two stacks
+    	Stack<Node> stack1 = new Stack<>();
+    	Stack<Node> stack2 = new Stack<>();
+ 
+    	// Push the root to stack1
+    	stack1.push(root);
+ 
+    	// Traverse the tree
+    	while (!stack1.isEmpty()) {
+        	// Pop from stack1 and push it to stack2
+        	Node node = stack1.pop();
+        	stack2.push(node);
+ 
+        	// Push left and right children of the popped node to stack1
+        	if (node.left != null) {
+            	stack1.push(node.left);
+        	}
+        	if (node.right != null) {
+            	stack1.push(node.right);
+        	}
+    	}
+ 
+    	// Now print all elements from stack2 (this is postorder)
+    	while (!stack2.isEmpty()) {
+        	Node node = stack2.pop();
+        	System.out.print(node.data + " ");
+    	}
+	}
+}
+ 
+public class Main {
+	public static void main(String[] args) {
+    	Scanner scanner = new Scanner(System.in);
+    	
+    	System.out.println("Enter an infix expression (e.g., a-b*c+d): ");
+    	String expression = scanner.nextLine();
+    	
+    	ExpressionTree tree = new ExpressionTree();
+    	
+    	// Convert infix to postfix
+    	String postfix = tree.infixToPostfix(expression);
+    	System.out.println("Postfix expression: " + postfix);
+    	
+    	// Build the tree from postfix
+    	Node root = tree.buildTreeFromPostfix(postfix);
+    	
+    	// Perform non-recursive postorder traversal
+    	PostorderTraversal traversal = new PostorderTraversal();
+    	System.out.println("Postorder Traversal (non-recursive): ");
+        traversal.postorderNonRecursive(root);  // Perform postorder traversal
+	}
+}

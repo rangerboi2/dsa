@@ -1,0 +1,188 @@
+
+4. Design a phone book application using suitable Trees data structure, enabling users to efficiently insert, search, update, and delete contacts.
+
+import java.util.Scanner;
+
+class Contact {
+    String name;
+    String phoneNumber;
+
+    public Contact(String name, String phoneNumber) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Phone Number: " + phoneNumber;
+    }
+}
+
+class TreeNode {
+    Contact contact;
+    TreeNode left, right;
+
+    public TreeNode(Contact contact) {
+        this.contact = contact;
+        left = right = null;
+    }
+}
+
+class PhoneBook {
+    private TreeNode root;
+
+    // Insert a new contact
+    public void insert(String name, String phoneNumber) {
+        root = insertRec(root, new Contact(name, phoneNumber));
+    }
+
+    private TreeNode insertRec(TreeNode root, Contact contact) {
+        if (root == null) {
+            return new TreeNode(contact);
+        }
+        if (contact.phoneNumber.compareTo(root.contact.phoneNumber) < 0) {
+            root.left = insertRec(root.left, contact);
+        } else if (contact.phoneNumber.compareTo(root.contact.phoneNumber) > 0) {
+            root.right = insertRec(root.right, contact);
+        } else {
+            System.out.println("Contact with this phone number already exists.");
+        }
+        return root;
+    }
+
+    // Search for a contact
+    public Contact search(String phoneNumber) {
+        return searchRec(root, phoneNumber);
+    }
+
+    private Contact searchRec(TreeNode root, String phoneNumber) {
+        if (root == null || root.contact.phoneNumber.equals(phoneNumber)) {
+            return root != null ? root.contact : null;
+        }
+        if (phoneNumber.compareTo(root.contact.phoneNumber) < 0) {
+            return searchRec(root.left, phoneNumber);
+        }
+        return searchRec(root.right, phoneNumber);
+    }
+
+    // Update a contact
+    public void update(String phoneNumber, String newName) {
+        Contact contact = search(phoneNumber);
+        if (contact != null) {
+            contact.name = newName;
+            System.out.println("Contact updated successfully.");
+        } else {
+            System.out.println("Contact not found.");
+        }
+    }
+
+    // Delete a contact
+    public void delete(String phoneNumber) {
+        root = deleteRec(root, phoneNumber);
+    }
+
+    private TreeNode deleteRec(TreeNode root, String phoneNumber) {
+        if (root == null) {
+            System.out.println("Contact not found.");
+            return null;
+        }
+        if (phoneNumber.compareTo(root.contact.phoneNumber) < 0) {
+            root.left = deleteRec(root.left, phoneNumber);
+        } else if (phoneNumber.compareTo(root.contact.phoneNumber) > 0) {
+            root.right = deleteRec(root.right, phoneNumber);
+        } else {
+            // Node with one child or no child
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+
+            // Node with two children: Get the inorder successor
+            root.contact = findMin(root.right);
+            root.right = deleteRec(root.right, root.contact.phoneNumber);
+        }
+        return root;
+    }
+
+    private Contact findMin(TreeNode root) {
+        while (root.left != null) {
+            root = root.left;
+        }
+        return root.contact;
+    }
+
+    // Display contacts in sorted order
+    public void display() {
+        System.out.println("Phone Book Contacts:");
+        displayRec(root);
+    }
+
+    private void displayRec(TreeNode root) {
+        if (root != null) {
+            displayRec(root.left);
+            System.out.println(root.contact);
+            displayRec(root.right);
+        }
+    }
+}
+
+public class PhoneBookApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        PhoneBook phoneBook = new PhoneBook();
+        int choice;
+
+        do {
+            System.out.println("\nPhone Book Menu:");
+            System.out.println("1. Add Contact");
+            System.out.println("2. Search Contact");
+            System.out.println("3. Update Contact");
+            System.out.println("4. Delete Contact");
+            System.out.println("5. Display All Contacts");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter Phone Number: ");
+                    String phoneNumber = scanner.nextLine();
+                    phoneBook.insert(name, phoneNumber);
+                    break;
+                case 2:
+                    System.out.print("Enter Phone Number to Search: ");
+                    phoneNumber = scanner.nextLine();
+                    Contact contact = phoneBook.search(phoneNumber);
+                    if (contact != null) {
+                        System.out.println("Contact Found: " + contact);
+                    } else {
+                        System.out.println("Contact not found.");
+                    }
+                    break;
+                case 3:
+                    System.out.print("Enter Phone Number to Update: ");
+                    phoneNumber = scanner.nextLine();
+                    System.out.print("Enter New Name: ");
+                    name = scanner.nextLine();
+                    phoneBook.update(phoneNumber, name);
+                    break;
+                case 4:
+                    System.out.print("Enter Phone Number to Delete: ");
+                    phoneNumber = scanner.nextLine();
+                    phoneBook.delete(phoneNumber);
+                    break;
+                case 5:
+                    phoneBook.display();
+                    break;
+                case 6:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        } while (choice != 6);
+
+        scanner.close();
+    }
+}

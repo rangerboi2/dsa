@@ -1,0 +1,82 @@
+6. In a transportation network, construct an optimal road system connecting cities to minimize construction costs while ensuring every city is reachable. Construct Minimum Spanning Tree for this Network and find total cost using PRIMs Algorithm.
+
+import java.util.*;
+
+public class PrimMST {
+    static class Edge {
+        int dest, weight;
+
+        Edge(int dest, int weight) {
+            this.dest = dest;
+            this.weight = weight;
+        }
+    }
+
+    static class Graph {
+        int vertices;
+        List<List<Edge>> adjList;
+
+        Graph(int vertices) {
+            this.vertices = vertices;
+            adjList = new ArrayList<>();
+            for (int i = 0; i < vertices; i++) {
+                adjList.add(new ArrayList<>());
+            }
+        }
+
+        void addEdge(int src, int dest, int weight) {
+            adjList.get(src).add(new Edge(dest, weight));
+            adjList.get(dest).add(new Edge(src, weight)); // Because it's undirected
+        }
+    }
+
+    static int primMST(Graph graph) {
+        int totalCost = 0;
+        boolean[] inMST = new boolean[graph.vertices];
+        PriorityQueue<Edge> pq = new PriorityQueue<>(Comparator.comparingInt(e -> e.weight));
+        pq.add(new Edge(0, 0)); // Start with vertex 0
+
+        while (!pq.isEmpty()) {
+            Edge current = pq.poll();
+            int vertex = current.dest;
+
+            if (inMST[vertex]) continue;
+
+            inMST[vertex] = true;
+            totalCost += current.weight;
+
+            for (Edge edge : graph.adjList.get(vertex)) {
+                if (!inMST[edge.dest]) {
+                    pq.add(edge);
+                }
+            }
+        }
+
+        return totalCost;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter number of cities: ");
+        int cities = scanner.nextInt();
+
+        System.out.print("Enter number of roads: ");
+        int roads = scanner.nextInt();
+
+        Graph graph = new Graph(cities);
+
+        System.out.println("Enter the roads (city1 city2 cost): ");
+        for (int i = 0; i < roads; i++) {
+            int city1 = scanner.nextInt();
+            int city2 = scanner.nextInt();
+            int cost = scanner.nextInt();
+            graph.addEdge(city1 - 1, city2 - 1, cost); // Adjust for 0-based index
+        }
+
+        int totalCost = primMST(graph);
+        System.out.println("Total cost of Minimum Spanning Tree: " + totalCost);
+
+        scanner.close();
+    }
+}

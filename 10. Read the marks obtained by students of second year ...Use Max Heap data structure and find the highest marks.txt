@@ -1,0 +1,71 @@
+10. Read the marks obtained by students of second year in an online examination of a particular subject. Find out the maximum and minimum marks obtained in that subject. Use Max Heap data structure and find the highest marks.
+
+import java.util.Scanner;
+
+public class FindMinMaxUsingMaxHeap {
+    // Heapify the tree for a Max Heap
+    private static void heapifyMax(int[] arr, int n, int i) {
+        int largest = i; // Initialize largest as root
+        int left = 2 * i + 1; // Left child
+        int right = 2 * i + 2; // Right child
+
+        if (left < n && arr[left] > arr[largest]) {
+            largest = left;
+        }
+        if (right < n && arr[right] > arr[largest]) {
+            largest = right;
+        }
+
+        if (largest != i) {
+            // Swap and heapify the affected subtree
+            int temp = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = temp;
+
+            heapifyMax(arr, n, largest);
+        }
+    }
+
+    // Build Max Heap
+    private static void buildMaxHeap(int[] arr, int n) {
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapifyMax(arr, n, i);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input: Number of students and their marks
+        System.out.print("Enter the number of students: ");
+        int n = scanner.nextInt();
+        int[] marks = new int[n];
+
+        System.out.println("Enter the marks:");
+        for (int i = 0; i < n; i++) {
+            marks[i] = scanner.nextInt();
+        }
+
+        // Step 1: Find Maximum and Minimum Marks
+        int maxMark = Integer.MIN_VALUE;
+        int minMark = Integer.MAX_VALUE;
+
+        for (int mark : marks) {
+            if (mark > maxMark) {
+                maxMark = mark;
+            }
+            if (mark < minMark) {
+                minMark = mark;
+            }
+        }
+
+        System.out.println("Maximum marks obtained: " + maxMark);
+        System.out.println("Minimum marks obtained: " + minMark);
+
+        // Step 2: Use Max Heap to Find the Highest Marks
+        buildMaxHeap(marks, n);
+
+        // The root of the Max Heap is the maximum element
+        System.out.println("The highest marks using Max Heap are: " + marks[0]);
+    }
+}
