@@ -1,0 +1,288 @@
+Viva Questions and Answers:
+Basic Questions
+What is a stack?
+A stack is a linear data structure that operates on the principle of Last In, First Out (LIFO), meaning the last element added is the first to be removed.
+
+Why is a linked list used to implement a stack?
+A linked list allows dynamic memory allocation, meaning the stack can grow or shrink as needed without wasting memory, unlike an array-based implementation.
+
+What is the time complexity of the push and pop operations?
+Both operations have a time complexity of O(1) since they involve modifying or accessing the top of the stack.
+
+What happens when you pop an element from an empty stack?
+The program prints a message indicating "Stack underflow" and returns -1 to signify the stack is empty.
+
+Intermediate Questions
+How is memory managed in this implementation?
+Each node is dynamically allocated using the new keyword. When a node is removed (during pop), the reference to it is lost, and it becomes eligible for garbage collection.
+
+How does the peek operation work?
+It simply returns the data of the top node without modifying the stack.
+
+What is the difference between an array-based stack and a linked-list-based stack?
+Array-Based Stack:
+Fixed size (requires resizing if exceeded).
+Contiguous memory allocation.
+Linked-List-Based Stack:
+Dynamic size (grows as needed).
+Non-contiguous memory allocation.
+
+What would happen if a node points to itself in a linked list?
+It would create a cyclic loop, potentially causing infinite traversal during operations like display.
+
+Advanced Questions
+How would you modify this implementation to include a size() method?
+Add an integer field size to the StackUsingLinkedList class and update it during push (increment) and pop (decrement). The size() method would simply return this field.
+
+What are the advantages of using a linked list over an array for a stack?
+Dynamic resizing.
+No need to define an initial capacity.
+Efficient memory usage as no unused space is reserved.
+How can this implementation be improved for concurrent environments?
+
+Synchronization can be added to make the stack thread-safe, or use Java's java.util.concurrent package for built-in thread-safe data structures like ConcurrentLinkedDeque.
+Example Viva Scenario:
+Examiner: Can you explain the logic of the push operation in this code?
+
+Answer: The push operation creates a new node with the given data. If the stack is empty (top is null), the new node becomes the top. Otherwise, the new node’s next pointer is set to the current top, and the new node becomes the top.
+Examiner: What would the output be if the stack was empty and we called the peek method?
+
+Answer: The method would print "Stack is empty! Nothing to peek." and return -1.
+Examiner: How would you handle a StackOverflow scenario in this implementation?
+
+Answer: A StackOverflow scenario would not occur here because a linked list dynamically allocates memory. However, if the system runs out of memory, a java.lang.OutOfMemoryError could be thrown.
+Examiner: How does the isEmpty method work?
+
+Answer: The method checks whether the top pointer is null. If it is null, the stack is empty; otherwise, it is not.
+
+
+
+
+Example Viva Scenario:
+Examiner: What is the postfix notation for the infix expression a-b*c-d/e+f?
+
+Answer: The postfix expression is abc*-de/f-+.
+Examiner: Walk me through the buildTreeFromPostfix method. What happens when the postfix expression abc*- is processed?
+
+Answer:
+Push a onto the stack.
+Push b onto the stack.
+Push c onto the stack.
+Encounter *:
+Pop c and b.
+Create a node with * as the root, b as the left child, and c as the right child. Push this node onto the stack.
+Encounter -:
+Pop the * node and a.
+Create a node with - as the root, a as the left child, and * as the right child. Push this node onto the stack.
+The final tree:
+css
+Copy code
+      -
+     / \
+    a   *
+       / \
+      b   c
+Examiner: What is the purpose of the precedence method?
+
+Answer: The precedence method assigns a precedence value to operators (+, -, *, /) to ensure they are processed in the correct order during conversion from infix to postfix.
+Examiner: How would you modify the code to handle expressions with exponential operators (^)?
+
+Answer: Add case '^': return 3; to the precedence method. Modify the infixToPostfix method to handle right-to-left associativity for ^.
+
+
+
+
+Advanced Questions
+What are the time complexities of enqueue, dequeue, and displayQueue?
+
+Enqueue: O(1)
+Dequeue: O(1)
+DisplayQueue: O(n), where n is the number of elements in the queue.
+Can the system handle orders of different priorities?
+
+No, this implementation processes orders in FCFS without considering priority. To handle priorities, a priority queue would be required.
+What is the difference between a normal queue and a circular queue?
+
+A normal queue has a fixed start and end, and it cannot reuse freed spaces.
+A circular queue reuses freed spaces by wrapping around.
+
+
+
+How would you modify this program to handle duplicate phone numbers?
+
+Use a list to store multiple contacts with the same phone number at each node.
+What are the disadvantages of an unbalanced BST?
+
+Operations may degrade to 
+𝑂(𝑛)
+O(n) in the worst case, making it inefficient.
+How would you implement search by name in this application?
+
+Use a secondary data structure like a hash map to store contacts by name for fast lookups.
+
+
+Viva Questions and Answers
+Basic Questions
+What is a Threaded Binary Tree?
+
+A binary tree where null pointers are replaced with threads pointing to in-order predecessors and successors.
+Why use a Threaded Binary Tree?
+
+To enable efficient in-order traversal without recursion or a stack.
+Intermediate Questions
+How does the inorderTraversal method work?
+
+Starts from the leftmost node.
+Follows threads when available or moves to the right subtree to find the next node in the in-order sequence.
+What happens during insertion when a thread is replaced?
+
+A new node takes the position of the thread, and threads of other nodes are updated to maintain the in-order sequence.
+Advanced Questions
+How would you handle deletion in a Threaded Binary Tree?
+
+Identify the node to be deleted and:
+Adjust the threads of its predecessor and successor to bypass it.
+Reorganize the tree if the node has children.
+What are the drawbacks of Threaded Binary Trees?
+
+Increased complexity for insertion and deletion.
+Not as efficient for general-purpose use as balanced binary trees (e.g., AVL trees).
+
+
+
+Sample Viva Questions
+Basic Questions
+What is a Minimum Spanning Tree (MST)?
+
+A spanning tree of a graph with the minimum total weight of edges, ensuring all vertices are connected.
+Why is Prim's Algorithm used for MST?
+
+It is simple, efficient, and works well for dense graphs.
+Intermediate Questions
+How does Prim's Algorithm differ from Kruskal's Algorithm?
+
+Prim's algorithm grows the MST one vertex at a time, while Kruskal's algorithm grows it edge by edge based on sorted edge weights.
+What is the role of the priority queue in Prim's Algorithm?
+
+It helps efficiently retrieve the minimum-cost edge connecting a new vertex to the MST.
+Advanced Questions
+What is the time complexity of Prim's Algorithm?
+
+𝑂(𝐸log⁡𝑉)
+O(ElogV) using a priority queue and adjacency list representation.
+Can Prim's Algorithm handle negative edge weights?
+
+Yes, as long as the graph remains connected, the algorithm will find the MST. Negative weights do not affect the correctness.
+
+
+
+Sample Viva Questions
+Basic Questions
+What is a Minimum Spanning Tree?
+
+A subgraph connecting all vertices with the minimum total edge weight, without forming cycles.
+What are the key steps in Kruskal's Algorithm?
+
+Sort edges, iterate through sorted edges, and use Union-Find to prevent cycles.
+Intermediate Questions
+How does Kruskal's Algorithm prevent cycles?
+
+By using the Union-Find data structure to track connected components.
+When is Kruskal's Algorithm preferred over Prim's Algorithm?
+
+For sparse graphs with fewer edges.
+Advanced Questions
+What is the time complexity of Kruskal's Algorithm?
+
+𝑂(𝐸log⁡𝐸+𝐸𝛼(𝑉))
+O(ElogE+Eα(V)), where 𝐸 E is the number of edges, 
+𝑉 V is the number of vertices, and 
+𝛼 α is the inverse Ackermann function.
+Can Kruskal's Algorithm handle negative edge weights?
+
+Yes, negative weights do not affect the correctness of the algorithm.
+
+
+
+Viva Questions
+Basic Questions
+What is Dijkstra's Algorithm?
+
+An algorithm to find the shortest path from a source node to all other nodes in a graph.
+Why can’t Dijkstra's Algorithm handle negative weights?
+
+Negative weights can cause incorrect distance calculations since the algorithm assumes a shorter path won't be found after processing a node.
+Intermediate Questions
+What is the time complexity of Dijkstra's Algorithm?
+
+𝑂((𝑉+𝐸)log⁡𝑉)
+O((V+E)logV), where 
+𝑉 V is the number of vertices and 
+𝐸 E is the number of edges (using a priority queue).
+How does Dijkstra's Algorithm differ from Bellman-Ford?
+
+Bellman-Ford handles negative weights but has a higher time complexity (
+𝑂(𝑉𝐸)
+O(VE)).
+Advanced Questions
+What data structure is used to optimize Dijkstra's Algorithm?
+
+A priority queue (min-heap) to efficiently retrieve the closest node.
+How would you modify Dijkstra's Algorithm for a dynamic graph?
+
+Recalculate paths whenever edge weights change or use a dynamic shortest path algorithm like A*.
+
+
+
+Viva Questions
+Basic Questions
+What is a Min Heap?
+
+A binary heap where each parent node is smaller than its children, ensuring the minimum element is always at the root.
+How is a Min Heap different from a Max Heap?
+
+In a Max Heap, each parent node is greater than its children, ensuring the maximum element is at the root.
+Intermediate Questions
+Why do we build the heap starting from the middle of the array?
+
+This ensures that every subtree rooted at non-leaf nodes satisfies the heap property. This approach leads to a more efficient heap construction.
+What happens if the heap property is violated?
+
+The heap will no longer function correctly, and operations like extracting the minimum element would not give the correct result.
+Advanced Questions
+How would you modify the algorithm to use a Max Heap to find the highest mark?
+
+To find the maximum mark, you would build a Max Heap (swap comparisons) instead of a Min Heap. The root of the Max Heap will give the maximum value.
+Can you explain how the heapify function works in detail?
+
+The heapify function ensures that a subtree rooted at a given index maintains the heap property by checking the parent node against its children and swapping if necessary, recursively calling heapify on the affected child.
+
+
+
+Viva Questions
+Basic Questions
+What is a Max Heap?
+
+A binary heap where each parent node is greater than its children, ensuring the maximum element is always at the root.
+How is a Max Heap different from a Min Heap?
+
+In a Min Heap, each parent node is smaller than its children, ensuring the minimum element is at the root.
+Intermediate Questions
+Why do we build the heap starting from the middle of the array?
+
+Starting from the middle ensures that each node and its subtrees are processed efficiently, leading to an overall 
+𝑂
+(
+𝑛
+)
+O(n) time complexity for heap construction.
+What happens if the heap property is violated?
+
+The heap structure is compromised, and operations like extracting the maximum element may not work correctly.
+Advanced Questions
+How would you modify the algorithm to use a Min Heap to find the lowest mark?
+
+You would build a Min Heap instead of a Max Heap. The root of the Min Heap will give the minimum value.
+Can you explain how the heapify function works in detail?
+
+The heapifyMax function checks if the parent node is larger than its children. If not, it swaps the parent node with the largest child and recursively calls heapifyMax on the affected subtree until the heap property is restored.
