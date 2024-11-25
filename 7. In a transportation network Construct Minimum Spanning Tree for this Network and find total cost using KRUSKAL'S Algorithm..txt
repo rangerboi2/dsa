@@ -17,7 +17,7 @@ class Edge implements Comparable<Edge> {
     }
 }
 
-class KruskalMST {
+public class KruskalMST {
     private int[] parent, rank;
 
     public KruskalMST(int vertices) {
