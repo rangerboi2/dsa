@@ -271,10 +271,7 @@ Intermediate Questions
 Why do we build the heap starting from the middle of the array?
 
 Starting from the middle ensures that each node and its subtrees are processed efficiently, leading to an overall 
-𝑂
-(
-𝑛
-)
+𝑂(𝑛)
 O(n) time complexity for heap construction.
 What happens if the heap property is violated?
 
